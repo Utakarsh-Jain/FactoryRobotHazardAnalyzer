@@ -13,6 +13,9 @@ Date: 11/11/2026
  */
 
 package org.example;
+
+import org.example.exception.RobotSafetyException;
+
 import java.util.Scanner;
 
 public class FactoryRobotHazardAnalyzer {
@@ -38,16 +41,21 @@ public class FactoryRobotHazardAnalyzer {
         System.out.println("Enter Machinery State:");
         String machineryState = scanner.nextLine();
 
-        // Calls the method to calculate the hazard risk score.
-        double hazardRisk = calculateHazardRisk(
-                armPrecision,
-                workerDensity,
-                machineryState
-        );
+        try {
 
-        // Displays the hazard risk score if the inputs are valid.
-        if (hazardRisk != -1.0) {
+            // Calculates the hazard risk score.
+            double hazardRisk = calculateHazardRisk(
+                    armPrecision,
+                    workerDensity,
+                    machineryState
+            );
+
             System.out.println("Robot Hazard Risk Score: " + hazardRisk);
+
+        } catch (RobotSafetyException exception) {
+
+            // Displays the custom exception message.
+            System.out.println(exception.getMessage());
         }
     }
 
@@ -55,26 +63,23 @@ public class FactoryRobotHazardAnalyzer {
     public static double calculateHazardRisk(
             double armPrecision,
             int workerDensity,
-            String machineryState) {
+            String machineryState)
+            throws RobotSafetyException {
 
         // Validates arm precision.
         if (armPrecision < 0.0 || armPrecision > 1.0) {
 
-            System.out.println(
+            throw new RobotSafetyException(
                     "Error: Arm precision must be 0.0-1.0"
             );
-
-            return -1.0;
         }
 
         // Validates worker density.
         if (workerDensity < 1 || workerDensity > 20) {
 
-            System.out.println(
+            throw new RobotSafetyException(
                     "Error: Worker density must be 1-20"
             );
-
-            return -1.0;
         }
 
         // Validates machinery state.
@@ -82,11 +87,9 @@ public class FactoryRobotHazardAnalyzer {
                 && !machineryState.equals("Faulty")
                 && !machineryState.equals("Critical")) {
 
-            System.out.println(
+            throw new RobotSafetyException(
                     "Error: Unsupported machinery state"
             );
-
-            return -1.0;
         }
 
         double machineRiskFactor =
