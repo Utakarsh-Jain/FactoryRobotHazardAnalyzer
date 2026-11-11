@@ -1,19 +1,19 @@
 /*
-UC5: Refactor Validation into a Separate Method
+UC7: Machinery State Risk Mapping
 Goal
-Move hazard calculation and validation into a separate method.
+Handle machinery risk factors using structured logic.
 Actor
-User / Developer
+User
 Flow
-1. main() calls calculateHazardRisk()
-2. Method validates inputs
-3. Method returns hazard score
+1. Program maps machinery state to risk factor
+2. Uses mapped value in hazard calculation
+
 Name: Utakarsh Jain
 Date: 11/11/2026
  */
 
 package org.example;
-
+import org.example.enums.MachineryState;
 import org.example.exception.RobotSafetyException;
 
 import java.util.Scanner;
@@ -82,33 +82,13 @@ public class FactoryRobotHazardAnalyzer {
             );
         }
 
-        // Validates machinery state.
-        if (!machineryState.equals("Worn")
-                && !machineryState.equals("Faulty")
-                && !machineryState.equals("Critical")) {
+        // Converts the machinery state into an enum.
+        MachineryState state = MachineryState.fromString(machineryState);
 
-            throw new RobotSafetyException(
-                    "Error: Unsupported machinery state"
-            );
-        }
-
-        double machineRiskFactor =
-                getMachineRiskFactor(machineryState);
+        double machineRiskFactor = state.getRiskFactor();
 
         // Calculates the hazard risk using the given formula.
         return ((1.0 - armPrecision) * 15.0)
                 + (workerDensity * machineRiskFactor);
-    }
-
-    // Returns the risk factor associated with the machinery state.
-    private static double getMachineRiskFactor(String machineryState) {
-
-        if (machineryState.equals("Worn")) {
-            return 1.3;
-        } else if (machineryState.equals("Faulty")) {
-            return 2.0;
-        } else {
-            return 3.0;
-        }
     }
 }

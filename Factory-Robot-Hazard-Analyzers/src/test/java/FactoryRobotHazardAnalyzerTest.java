@@ -2,35 +2,6 @@ import org.example.FactoryRobotHazardAnalyzer;
 import org.example.exception.RobotSafetyException;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.junit.jupiter.api.Test;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.junit.jupiter.api.Test;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -124,7 +95,7 @@ class FactoryRobotHazardAnalyzerTest {
 
     // Verifies that boundary values are accepted.
     @Test
-    void shouldAcceptBoundaryValues() throws RobotSafetyException, RobotSafetyException {
+    void shouldAcceptBoundaryValues() throws RobotSafetyException {
 
         double risk = FactoryRobotHazardAnalyzer.calculateHazardRisk(
                 1.0, 20, "Critical"
