@@ -1,20 +1,18 @@
 /*
-UC4: Introduce Validation Using Conditional Logic
+UC5: Refactor Validation into a Separate Method
 Goal
-Validate input ranges using if-else statements.
+Move hazard calculation and validation into a separate method.
 Actor
-User
+User / Developer
 Flow
-1. Program checks each input
-2. If invalid, prints an error message
-3. If valid, calculates risk
+1. main() calls calculateHazardRisk()
+2. Method validates inputs
+3. Method returns hazard score
 Name: Utakarsh Jain
 Date: 11/11/2026
  */
 
 package org.example;
-
-
 import java.util.Scanner;
 
 public class FactoryRobotHazardAnalyzer {
@@ -40,6 +38,25 @@ public class FactoryRobotHazardAnalyzer {
         System.out.println("Enter Machinery State:");
         String machineryState = scanner.nextLine();
 
+        // Calls the method to calculate the hazard risk score.
+        double hazardRisk = calculateHazardRisk(
+                armPrecision,
+                workerDensity,
+                machineryState
+        );
+
+        // Displays the hazard risk score if the inputs are valid.
+        if (hazardRisk != -1.0) {
+            System.out.println("Robot Hazard Risk Score: " + hazardRisk);
+        }
+    }
+
+    // Validates inputs and calculates the hazard risk score.
+    public static double calculateHazardRisk(
+            double armPrecision,
+            int workerDensity,
+            String machineryState) {
+
         // Validates arm precision.
         if (armPrecision < 0.0 || armPrecision > 1.0) {
 
@@ -47,19 +64,21 @@ public class FactoryRobotHazardAnalyzer {
                     "Error: Arm precision must be 0.0-1.0"
             );
 
+            return -1.0;
         }
 
         // Validates worker density.
-        else if (workerDensity < 1 || workerDensity > 20) {
+        if (workerDensity < 1 || workerDensity > 20) {
 
             System.out.println(
                     "Error: Worker density must be 1-20"
             );
 
+            return -1.0;
         }
 
         // Validates machinery state.
-        else if (!machineryState.equals("Worn")
+        if (!machineryState.equals("Worn")
                 && !machineryState.equals("Faulty")
                 && !machineryState.equals("Critical")) {
 
@@ -67,22 +86,15 @@ public class FactoryRobotHazardAnalyzer {
                     "Error: Unsupported machinery state"
             );
 
+            return -1.0;
         }
 
-        // Calculates the hazard risk if all inputs are valid.
-        else {
+        double machineRiskFactor =
+                getMachineRiskFactor(machineryState);
 
-            double machineRiskFactor =
-                    getMachineRiskFactor(machineryState);
-
-            double hazardRisk =
-                    ((1.0 - armPrecision) * 15.0)
-                            + (workerDensity * machineRiskFactor);
-
-            System.out.println(
-                    "Robot Hazard Risk Score: " + hazardRisk
-            );
-        }
+        // Calculates the hazard risk using the given formula.
+        return ((1.0 - armPrecision) * 15.0)
+                + (workerDensity * machineRiskFactor);
     }
 
     // Returns the risk factor associated with the machinery state.
