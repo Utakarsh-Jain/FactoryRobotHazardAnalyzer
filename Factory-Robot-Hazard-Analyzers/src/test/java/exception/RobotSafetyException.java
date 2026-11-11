@@ -1,6 +1,7 @@
 package exception;
 
 import org.example.exception.RobotSafetyException;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
